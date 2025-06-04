@@ -1,0 +1,87 @@
+class Solution {//recursion
+    public int minimumTotal(List<List<Integer>> triangle) {
+        return f(triangle,0,0);
+    }
+    public int f(List<List<Integer>> arr,int i,int j){
+        if(i==arr.size()-1){
+            return arr.get(i).get(j);
+        }
+        int down=arr.get(i).get(j)+f(arr,i+1,j);
+        int diagonal=arr.get(i).get(j)+f(arr,i+1,j+1);
+
+        return Math.min(down,diagonal);
+    }
+}
+
+class Solution {//memoization
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n=triangle.size();
+        int[][] dp=new int[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                dp[i][j]=-1;
+            }
+        }
+        return f(triangle,0,0,dp);
+    }
+    public int f(List<List<Integer>> arr,int i,int j,int[][] dp){
+        if(i==arr.size()-1){
+            return arr.get(i).get(j);
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+
+        int down=arr.get(i).get(j)+f(arr,i+1,j,dp);
+        int diagonal=arr.get(i).get(j)+f(arr,i+1,j+1,dp);
+
+        return dp[i][j]=Math.min(down,diagonal);
+    }
+}
+
+class Solution {//little confusing
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        int[][] dp = new int[n][n];
+
+        // Fill the bottom row
+        for (int j = 0; j < n; j++) {
+            dp[n - 1][j] = triangle.get(n - 1).get(j);
+        }
+
+        // Bottom-up DP
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                int down = dp[i + 1][j];
+                int diagonal = dp[i + 1][j + 1];
+                dp[i][j] = triangle.get(i).get(j) + Math.min(down, diagonal);
+            }
+        }
+
+        return dp[0][0];
+    }
+}
+
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {//space optimized
+        int n = triangle.size();
+        int[] dp = new int[n];
+
+        // Initialize dp with the last row of the triangle
+        for (int j = 0; j < n; j++) {
+            dp[j] = triangle.get(n - 1).get(j);
+        }
+
+        // Build the DP array from bottom to top
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                int down = dp[j];
+                int diagonal = dp[j + 1];
+                dp[j] = triangle.get(i).get(j) + Math.min(down, diagonal);
+            }
+        }
+
+        return dp[0];
+    }
+}

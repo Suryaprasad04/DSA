@@ -8,7 +8,7 @@ class Solution {
         return minSum;
     }
     public int f(int[][] arr,int i,int j){
-        if(j<0 || j>=arr[0].length){
+        if(j<0 || j>=arr[0].length){// see here..
             return Integer.MAX_VALUE;
         }
         if(i==arr.length-1){
